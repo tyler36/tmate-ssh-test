@@ -30,10 +30,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: ddev/github-action-add-on-test@v1
-        with:
-          ddev_version: ${{ matrix.ddev_version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          debug_enabled: ${{ github.event.inputs.debug_enabled }}
-          addon_repository: ${{ env.GITHUB_REPOSITORY }}
-          addon_ref: ${{ env.GITHUB_REF }}
+    - name: Environment setup
+      run: |
+        echo set -g tmate-server-port 2222 > ~/.tmate.conf
+
+    - uses: ddev/github-action-add-on-test@v1
+      with:
+        ddev_version: ${{ matrix.ddev_version }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        debug_enabled: ${{ github.event.inputs.debug_enabled }}
+        addon_repository: ${{ env.GITHUB_REPOSITORY }}
+        addon_ref: ${{ env.GITHUB_REF }}
